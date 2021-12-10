@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-public class testController {
+public class TestController {
 
     @Resource
     public TestService testService;
