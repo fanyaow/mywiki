@@ -9,3 +9,6 @@ Accept: application/json
 GET http://localhost:8000/demo/list
 
 ###
+GET http://localhost:8000/ebook/list
+
+###
