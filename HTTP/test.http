@@ -1,3 +1,7 @@
+GET http://localhost:8000/test/list
+
+
+###
 GET http://localhost:8000/hello
 Accept: application/json
 
