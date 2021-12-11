@@ -1,9 +1,8 @@
 package com.fyw.wiki.service;
 
 
-import com.fyw.wiki.domain.Demo;
 import com.fyw.wiki.domain.Ebook;
-import com.fyw.wiki.mapper.DemoMapper;
+import com.fyw.wiki.domain.EbookExample;
 import com.fyw.wiki.mapper.EbookMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,10 @@ public class EbookService {
 //    @Autowired  //spring的
     public EbookMapper ebookMapper;
 
-    public List<Ebook> list() {
-        return ebookMapper.selectByExample(null);
+    public List<Ebook> list(String name) {
+        EbookExample ebookExample = new EbookExample();
+        EbookExample.Criteria criteria = ebookExample.createCriteria();
+        criteria.andNameLike("%"+ name + "%");
+        return ebookMapper.selectByExample(ebookExample);
     }
 }
