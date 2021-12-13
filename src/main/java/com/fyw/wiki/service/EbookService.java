@@ -1,18 +1,16 @@
 package com.fyw.wiki.service;
 
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.fyw.wiki.domain.Ebook;
 import com.fyw.wiki.domain.EbookExample;
 import com.fyw.wiki.mapper.EbookMapper;
 import com.fyw.wiki.req.EbookReq;
 import com.fyw.wiki.resp.EbookResp;
 import com.fyw.wiki.util.CopyUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +24,10 @@ public class EbookService {
     public List<EbookResp> list(EbookReq req) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%"+ req.getName() + "%");
+        //增加判断 如果name为空,则返回所有
+        if (!ObjectUtils.isEmpty(req.getName())) {
+            criteria.andNameLike("%" + req.getName() + "%");
+        }
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
 //
