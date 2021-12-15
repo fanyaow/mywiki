@@ -93,13 +93,13 @@ for (let i = 0; i < 23; i++) {
 export default defineComponent({
   name: 'Home',
   setup() {
-    console.log("setup");
+    // console.log("setup");
     const ebooks =ref();
     //使用vue3的reactive 方法
     // const ebooks1= reactive({books: []});
 
     onMounted(() => {
-      console.log('onMounted');
+      // console.log('onMounted');
       // axios.get("http://localhost:8000/ebook/list?name=Spring").then((response) => {
       // axios.get("http://localhost:8000/ebook/list").then((response) => {
       // axios.get(process.env.VUE_APP_SERVER + "/ebook/list").then((response) => {
@@ -107,7 +107,7 @@ export default defineComponent({
         const data = response.data;
         ebooks.value= data.content;
         // ebooks1.books=data.content;
-        console.log(response)
+        // console.log(response)
       });
     });
     return {
