@@ -7,6 +7,10 @@ import com.fyw.wiki.mapper.EbookMapper;
 import com.fyw.wiki.req.EbookReq;
 import com.fyw.wiki.resp.EbookResp;
 import com.fyw.wiki.util.CopyUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -16,9 +20,12 @@ import java.util.List;
 @Service
 public class EbookService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
+
     @Resource  //jdk的
 //    @Autowired  //spring的
-    public EbookMapper ebookMapper;
+    private EbookMapper ebookMapper;
+
 
 
     public List<EbookResp> list(EbookReq req) {
@@ -28,7 +35,15 @@ public class EbookService {
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
+        //返回每页数据记录
+        PageHelper.startPage(1,3);
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
+
+        PageInfo<Ebook> pageInfo =new PageInfo<>(ebookList);
+            //获取总条数
+        LOG.info("总行数:{}", pageInfo.getTotal());
+            //获取总页数
+        LOG.info("总页数:{}", pageInfo.getPages());
 
 //
 //        List<EbookResp> respList = new ArrayList<>();
