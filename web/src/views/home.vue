@@ -78,18 +78,18 @@ import { StarOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons-v
 import {defineComponent, onMounted,ref,reactive,toRef} from 'vue';
 import axios from 'axios';
 
-const listData:any = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'https://www.antdv.com/',
-    title: `ant design vue part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-        'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  });
-}
+// const listData:any = [];
+// for (let i = 0; i < 23; i++) {
+//   listData.push({
+//     href: 'https://www.antdv.com/',
+//     title: `ant design vue part ${i}`,
+//     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+//     description:
+//         'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+//     content:
+//         'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+//   });
+// }
 export default defineComponent({
   name: 'Home',
   setup() {
@@ -103,9 +103,14 @@ export default defineComponent({
       // axios.get("http://localhost:8000/ebook/list?name=Spring").then((response) => {
       // axios.get("http://localhost:8000/ebook/list").then((response) => {
       // axios.get(process.env.VUE_APP_SERVER + "/ebook/list").then((response) => {
-      axios.get("/ebook/list").then((response) => {
+      axios.get("/ebook/list",{
+        params:{
+          page:1,
+          size:100
+        }
+      }).then((response) => {
         const data = response.data;
-        ebooks.value= data.content;
+        ebooks.value= data.content.list;
         // ebooks1.books=data.content;
         // console.log(response)
       });
@@ -113,7 +118,7 @@ export default defineComponent({
     return {
       ebooks,
       // ebooks2:toRef(ebooks1,"books")
-      listData,
+      // listData,
       pagination : {
         onChange: (page:any) => {
           console.log(page);

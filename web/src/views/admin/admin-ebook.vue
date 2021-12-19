@@ -42,7 +42,7 @@
       const ebooks=ref();
       const pagination =ref({
         current:1,
-        pageSize:2,    //每页显示的记录数
+        pageSize:4,    //每页显示的记录数
         total:0
       });
       const loading =ref(false);
@@ -85,13 +85,22 @@
       const handleQuery = (params: any) => {
         loading.value = true;
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
-        // ebooks.value = [];
-        axios.get("/ebook/list", params).then((response) => {
+        ebooks.value = [];
+        axios.get("/ebook/list", {
+
+          params: {
+            page: params.page,
+            size: params.size,
+          }
+
+        }).then((response) => {
           loading.value = false;
           const data = response.data;
+          ebooks.value=data.content.list;
 
             // 重置分页按钮
-            pagination.value.current = params.page;
+          pagination.value.current = params.page;
+          pagination.value.total=data.content.total;
         });
       };
 
@@ -106,7 +115,10 @@
         });
       };
       onMounted(()=>{
-        handleQuery({});
+        handleQuery({
+          page:1,
+          size:pagination.value.pageSize,
+        });
       });
 
       return {
@@ -119,3 +131,9 @@
     }
   })
 </script>
+<style scoped>
+img {
+  width: 50px;
+  height: 50px;
+}
+</style>
