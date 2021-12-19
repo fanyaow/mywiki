@@ -9,6 +9,7 @@ import com.fyw.wiki.req.EbookSaveReq;
 import com.fyw.wiki.resp.EbookQueryResp;
 import com.fyw.wiki.resp.PageResp;
 import com.fyw.wiki.util.CopyUtil;
+import com.fyw.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -27,6 +28,11 @@ public class EbookService {
     @Resource  //jdk的
 //    @Autowired  //spring的
     private EbookMapper ebookMapper;
+
+    @Resource  //jdk的
+//    @Autowired  //spring的
+    private SnowFlake snowFlake;
+
 
 
 
@@ -72,6 +78,7 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(req,Ebook.class);
         if (ObjectUtils.isEmpty(req.getId())){
             //新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);
         }else {
             //保存
