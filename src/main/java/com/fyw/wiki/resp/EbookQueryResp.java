@@ -1,6 +1,8 @@
 package com.fyw.wiki.resp;
 
 public class EbookQueryResp {
+    //解决前后端long类型精度不一致的问题,单个的用, 全局的JacksonConfig
+//    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     private String name;
