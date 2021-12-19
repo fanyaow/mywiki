@@ -6,6 +6,7 @@ import com.fyw.wiki.domain.EbookExample;
 import com.fyw.wiki.mapper.EbookMapper;
 import com.fyw.wiki.req.EbookReq;
 import com.fyw.wiki.resp.EbookResp;
+import com.fyw.wiki.resp.PageResp;
 import com.fyw.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -28,7 +29,7 @@ public class EbookService {
 
 
 
-    public List<EbookResp> list(EbookReq req) {
+    public PageResp<EbookResp> list(EbookReq req) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         //增加判断 如果name为空,则返回所有
@@ -36,7 +37,7 @@ public class EbookService {
             criteria.andNameLike("%" + req.getName() + "%");
         }
         //返回每页数据记录
-        PageHelper.startPage(1,3);
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo =new PageInfo<>(ebookList);
@@ -59,6 +60,9 @@ public class EbookService {
 //        return respList;
         //列表复制
         List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
-        return list;
+        PageResp<EbookResp> pageResp = new PageResp();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+        return pageResp;
     }
 }
