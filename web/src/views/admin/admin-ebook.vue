@@ -19,7 +19,7 @@
           <a-space size="small">
               <a-button type="primary">
               </a-button>
-            <a-button type="primary" @click="edit">
+            <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
               <a-button type="danger">
@@ -36,7 +36,24 @@
       :confirm-loading="modalLoading"
       @ok="handleModalOk"
   >
-    <p>test</p>
+    <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+      <a-form-item label="封面">
+        <a-input v-model:value="ebook.cover" />
+      </a-form-item>
+      <a-form-item label="名称">
+        <a-input v-model:value="ebook.name" />
+      </a-form-item>
+      <a-form-item label="分类">
+        <a-cascader
+            v-model:value="categoryIds"
+            :field-names="{ label: 'name', value: 'id', children: 'children' }"
+            :options="level1"
+        />
+      </a-form-item>
+      <a-form-item label="描述">
+        <a-input v-model:value="ebook.description" type="textarea" />
+      </a-form-item>
+    </a-form>
   </a-modal>
 </template>
 
@@ -124,6 +141,7 @@
       };
 
       //表单
+      const  ebook = ref();
       const modalVisible = ref(false);
       const modalLoading = ref(false);
       const handleModalOk = ()=>{
@@ -133,8 +151,9 @@
           modalLoading.value=false;
         },2000);
       };
-      const edit =(()=>{
+      const edit =((record : any)=>{
         modalVisible.value=true;
+        ebook.value=record;
       });
 
       onMounted(()=>{
@@ -154,7 +173,9 @@
         edit,
         modalVisible,
         modalLoading,
-        handleModalOk
+        handleModalOk,
+
+        ebook,
       }
     }
   })
