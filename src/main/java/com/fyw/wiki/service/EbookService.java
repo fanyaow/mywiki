@@ -4,8 +4,9 @@ package com.fyw.wiki.service;
 import com.fyw.wiki.domain.Ebook;
 import com.fyw.wiki.domain.EbookExample;
 import com.fyw.wiki.mapper.EbookMapper;
-import com.fyw.wiki.req.EbookReq;
-import com.fyw.wiki.resp.EbookResp;
+import com.fyw.wiki.req.EbookQueryReq;
+import com.fyw.wiki.req.EbookSaveReq;
+import com.fyw.wiki.resp.EbookQueryResp;
 import com.fyw.wiki.resp.PageResp;
 import com.fyw.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
@@ -29,7 +30,7 @@ public class EbookService {
 
 
 
-    public PageResp<EbookResp> list(EbookReq req) {
+    public PageResp<EbookQueryResp> list(EbookQueryReq req) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         //增加判断 如果name为空,则返回所有
@@ -59,10 +60,22 @@ public class EbookService {
 //        }
 //        return respList;
         //列表复制
-        List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
-        PageResp<EbookResp> pageResp = new PageResp();
+        List<EbookQueryResp> list = CopyUtil.copyList(ebookList, EbookQueryResp.class);
+        PageResp<EbookQueryResp> pageResp = new PageResp();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(list);
         return pageResp;
+    }
+
+    //保存
+    public void save(EbookSaveReq req){
+        Ebook ebook = CopyUtil.copy(req,Ebook.class);
+        if (ObjectUtils.isEmpty(req.getId())){
+            //新增
+            ebookMapper.insert(ebook);
+        }else {
+            //保存
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
     }
 }
