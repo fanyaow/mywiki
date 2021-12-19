@@ -174,15 +174,15 @@
       };
 
       //修改
-      const edit =((record : any)=>{
+      const edit =(record : any)=>{
         modalVisible.value=true;
         ebook.value=record;
-      });
+      };
       //新增
-      const add =(()=>{
+      const add =()=>{
         modalVisible.value=true;
         ebook.value= {};
-      });
+      };
 
       const handleDelete = (id: number)=> {
         axios.delete("/ebook/delete/"+id).then((response) => {
