@@ -11,12 +11,12 @@
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+            <a-button type="primary"  @click="handleQuery({page: 1, size: pagination.pageSize})">
               查询
             </a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="add()">
+            <a-button type="primary"  @click="add()">
               新增
             </a-button>
           </a-form-item>
@@ -36,9 +36,7 @@
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
-              <a-button type="primary">
-              </a-button>
-            <a-button type="primary" @click="edit(record)">
+            <a-button type="primary"  @click="edit(record)">
               编辑
             </a-button>
             <a-popconfirm
@@ -47,7 +45,7 @@
                 cancel-text="否"
                 @confirm="handleDelete(record.id)"
             >
-              <a-button type="danger">
+              <a-button type="primary" danger>
                 删除
               </a-button>
             </a-popconfirm>
