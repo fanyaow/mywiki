@@ -208,7 +208,8 @@
       const edit =(record : any)=>{
         modalVisible.value=true;
         ebook.value=Tool.copy(record);
-        categoryIds.value=[ebook.value.categroy1Id,ebook.value.categroy2Id];
+        categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id];
+        // categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id];
       };
       //新增
       const add =()=>{
@@ -238,6 +239,7 @@
       const handleQueryCategroy = () => {
         loading.value = true;
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+        ebook.value=[];
         axios.get("/category/all").then((response) => {
           loading.value = false;
           const data = response.data;
@@ -249,6 +251,11 @@
             level1.value = Tool.array2Tree(categorys, 0);
             console.log("树形结构：", level1.value);
 
+            // 加载完分类后，再加载电子书，否则如果分类树加载很慢，则电子书渲染会报错
+            handleQuery({
+              page: 1,
+              size: pagination.value.pageSize,
+            });
           }else {
             message.error(data.message)
           }
@@ -268,10 +275,7 @@
 
       onMounted(()=>{
         handleQueryCategroy();
-        handleQuery({
-          page:1,
-          size:pagination.value.pageSize,
-        });
+
       });
 
       return {
