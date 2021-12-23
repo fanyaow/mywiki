@@ -34,6 +34,9 @@
         <template #cover="{ text: cover }">
           <img v-if="cover" :src="cover" alt="avatar" />
         </template>
+        <template v-slot:category="{ text, record }">
+          <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
+        </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
             <a-button type="primary"  @click="edit(record)">
@@ -173,12 +176,18 @@
         });
       };
 
-      //表单
+      // -------- 表单 ---------
+      /**
+       * 数组，[100, 101]对应：前端开发 / Vue
+       */
+      const categoryIds = ref();
       const  ebook = ref();
       const modalVisible = ref(false);
       const modalLoading = ref(false);
       const handleModalOk = ()=>{
         modalLoading.value=true;
+        ebook.value.category1Id = categoryIds.value[0];
+        ebook.value.category2Id = categoryIds.value[1];
         axios.post("/ebook/save", ebook.value).then((response) => {
           modalLoading.value = false;
           const data = response.data;
@@ -199,6 +208,7 @@
       const edit =(record : any)=>{
         modalVisible.value=true;
         ebook.value=Tool.copy(record);
+        categoryIds.value=[ebook.value.categroy1Id,ebook.value.categroy2Id];
       };
       //新增
       const add =()=>{
@@ -218,9 +228,46 @@
             });
           }
         });
-      }
+      };
+
+      const level1 =ref();
+      let categorys:any;
+      /*
+      * 查询所有分类
+      * */
+      const handleQueryCategroy = () => {
+        loading.value = true;
+        // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
+        axios.get("/category/all").then((response) => {
+          loading.value = false;
+          const data = response.data;
+          if(data.success){
+            categorys=data.content;
+            console.log("原始数组：", categorys);
+
+            level1.value = [];
+            level1.value = Tool.array2Tree(categorys, 0);
+            console.log("树形结构：", level1.value);
+
+          }else {
+            message.error(data.message)
+          }
+        });
+      };
+      const getCategoryName = (cid: number) => {
+        // console.log(cid)
+        let result = "";
+        categorys.forEach((item: any) => {
+          if (item.id === cid) {
+            // return item.name; // 注意，这里直接return不起作用
+            result = item.name;
+          }
+        });
+        return result;
+      };
 
       onMounted(()=>{
+        handleQueryCategroy();
         handleQuery({
           page:1,
           size:pagination.value.pageSize,
@@ -235,6 +282,7 @@
         loading,
         handleTableChange,
         handleQuery,
+        getCategoryName,
 
         edit,
         add,
@@ -243,6 +291,8 @@
         modalVisible,
         modalLoading,
         handleModalOk,
+        categoryIds,
+        level1,
 
         handleDelete,
       }
