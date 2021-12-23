@@ -1,6 +1,8 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo" />
+    <div id="components-layout-demo-top-side-2">
+      <div class="logo" />
+    </div>
     <a-menu
         theme="dark"
         mode="horizontal"
@@ -30,3 +32,13 @@ export default defineComponent({
 
 });
 </script>
+
+<style>
+  #components-layout-demo-top-side-2 .logo {
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.3);
+  }
+</style>
