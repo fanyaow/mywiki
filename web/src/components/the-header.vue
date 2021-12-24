@@ -6,7 +6,6 @@
     <a-menu
         theme="dark"
         mode="horizontal"
-        v-model:selectedKeys="selectedKeys1"
         :style="{ lineHeight: '64px' }"
     >
       <a-menu-item key="/">
@@ -25,12 +24,13 @@
   </a-layout-header>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, ref} from 'vue';
 
 export default defineComponent({
   name: 'the-header',
 
 });
+
 </script>
 
 <style>
