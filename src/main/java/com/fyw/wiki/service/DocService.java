@@ -48,6 +48,7 @@ public class DocService {
 
     public PageResp<DocQueryResp> list(DocQueryReq req) {
         DocExample docExample = new DocExample();
+        docExample.setOrderByClause("sort asc");
         DocExample.Criteria criteria = docExample.createCriteria();
         //返回每页数据记录
         PageHelper.startPage(req.getPage(),req.getSize());
@@ -95,5 +96,13 @@ public class DocService {
     //删除
     public void delete(Long id){
         docMapper.deleteByPrimaryKey(id);
+    }
+
+    public void delete(List<String> ids){
+
+        DocExample docExample = new DocExample();
+        DocExample.Criteria criteria = docExample.createCriteria();
+        criteria.andIdIn(ids);
+        docMapper.deleteByExample(docExample);
     }
 }
