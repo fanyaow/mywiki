@@ -79,11 +79,12 @@
 </template>
 
 <script lang="ts">
-  import {defineComponent,onMounted,ref} from "vue";
+import {createVNode, defineComponent, onMounted, ref} from "vue";
   import axios from 'axios';
-  import {message} from "ant-design-vue";
+  import {message, Modal} from "ant-design-vue";
   import {Tool} from "@/util/tool";
   import {useRoute} from "vue-router";
+import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
   export default defineComponent({
     name:'AdminDoc',
@@ -238,7 +239,7 @@
             // 将目标ID放入结果集ids
             // node.disabled = true;
             deleteIds.push(id);
-            // deleteNames.push(node.name);
+            deleteNames.push(node.name);
 
             // 遍历所有子节点
             const children = node.children;
@@ -283,16 +284,28 @@
       };
 
       const handleDelete = (id: number)=> {
-        getDeleteIds(level1.value,id);
-        axios.delete("/doc/delete/"+deleteIds.join(",")).then((response) => {
-          const data = response.data;
-          if (data.success) {
+        // 清空数组，否则多次删除时，数组会一直增加
+        deleteIds.length = 0;
+        deleteNames.length=0;
+        getDeleteIds(level1.value, id);
+        Modal.confirm({
+          title: '重要提醒',
+          icon: createVNode(ExclamationCircleOutlined),
+          content: '将删除：【' + deleteNames.join("，") + "】删除后不可恢复，确认删除？",
+          onOk() {
 
-            //重新加载列表
-            handleQuery();
-          }
+            axios.delete("/doc/delete/" + deleteIds.join(",")).then((response) => {
+              const data = response.data;
+              if (data.success) {
+                //重新加载列表
+                handleQuery();
+              }else {
+                message.error(data.message);
+              }
+            });
+          },
         });
-      };
+      }
 
 
       onMounted(()=>{
