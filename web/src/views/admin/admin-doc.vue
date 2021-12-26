@@ -55,11 +55,20 @@
         </a-col>
         <a-col :span="16">
           <p>
+          <a-space size="small">
             <a-form layout="inline" :model="param">
               <a-button type="primary" @click="handleSave()">
                 保存
               </a-button>
             </a-form>
+            <a-form layout="'inline">
+              <router-link to="/admin/ebook">
+                <a-button type="dashed" danger>
+                  返回电子书
+                </a-button>
+              </router-link>
+            </a-form>
+          </a-space>
           </p>
           <a-form :model="doc" layout="vertical">
             <a-form-item >
