@@ -116,7 +116,7 @@ export default defineComponent({
     };
 
     const handleClick = (value: any) => {
-      // console.log("menu click", value)
+       console.log("menu click", value)
       if (value.key === 'welcome') {
         isShowWelcome.value = true;
       } else {
