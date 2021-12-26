@@ -219,8 +219,9 @@ export default defineComponent({
         modalLoading.value = false;
         const data = response.data;
         if (data.success) {
-          modalVisible.value = false;
+          // modalVisible.value = false;
 
+          message.success("保存成功!")
           //重新加载列表
           handleQuery();
         }else{
@@ -312,7 +313,9 @@ export default defineComponent({
     };
     //修改
     const edit =(record : any)=>{
-      modalVisible.value=true;
+      // modalVisible.value=true;
+      //清空富文本
+      editor.txt.html("");
       doc.value=Tool.copy(record);
       handleQueryContent();
 
@@ -326,7 +329,11 @@ export default defineComponent({
     };
     //新增
     const add =()=>{
-      modalVisible.value=true;
+      // modalVisible.value=true;
+
+      //清空富文本
+      editor.txt.html("");
+
       doc.value= {
         ebookId:route.query.ebookId,
       };
