@@ -14,6 +14,7 @@ import com.fyw.wiki.util.CopyUtil;
 import com.fyw.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xpath.internal.objects.XNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -122,6 +123,10 @@ public class DocService {
     //查询内容
     public String findContent(Long id){
         Content content = contentMapper.selectByPrimaryKey(id);
-        return content.getContent();
+        if (content !=null) {
+            return content.getContent();
+        }else {
+            return "";
+        }
     }
 }
