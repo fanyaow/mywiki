@@ -123,10 +123,10 @@ public class DocService {
     //查询内容
     public String findContent(Long id){
         Content content = contentMapper.selectByPrimaryKey(id);
-        if (content !=null) {
-            return content.getContent();
-        }else {
+        if (ObjectUtils.isEmpty(content)) {
             return "";
+        }else {
+            return content.getContent();
         }
     }
 }
