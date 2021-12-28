@@ -38,8 +38,9 @@ public class DocService {
 //    @Autowired  //spring的
     private SnowFlake snowFlake;
 
-    public List<DocQueryResp> all() {
+    public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
+        docExample.createCriteria().andEbookIdEqualTo(ebookId);
         docExample.setOrderByClause("sort asc");
         //返回每页数据记录
         List<Doc> docList = docMapper.selectByExample(docExample);
@@ -122,10 +123,10 @@ public class DocService {
     //查询内容
     public String findContent(Long id){
         Content content = contentMapper.selectByPrimaryKey(id);
-        if (content !=null) {
-            return content.getContent();
-        }else {
+        if (ObjectUtils.isEmpty(content)) {
             return "";
+        }else {
+            return content.getContent();
         }
     }
 }
