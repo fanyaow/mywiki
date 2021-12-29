@@ -84,6 +84,10 @@
   import {message} from "ant-design-vue";
   import {Tool} from "@/util/tool";
 
+  //引用第三方js时,变量会变红,可直接定义变量,是存在的
+  declare let hexMd5:any;
+  declare let KEY : any;
+
   export default defineComponent({
     name:'AdminUser',
     setup(){
@@ -125,11 +129,10 @@
         // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
         users.value = [];
         axios.get("/user/list", {
-
           params: {
             page: params.page,
             size: params.size,
-            loginName:param.value.loginName
+            loginName: param.value.loginName
           }
 
         }).then((response) => {
@@ -164,6 +167,10 @@
       const modalLoading = ref(false);
       const handleModalOk = ()=>{
         modalLoading.value=true;
+
+        //对密码进行md5加密
+        user.value.password=hexMd5(user.value.password + KEY)
+
         axios.post("/user/save", user.value).then((response) => {
           modalLoading.value = false;
           const data = response.data;
