@@ -93,7 +93,10 @@ public class UserService {
             }
         }else {
             //保存
-            userMapper.updateByPrimaryKey(user);
+//            userMapper.updateByPrimaryKey(user);
+            //保存时,如果loginName 为空,都不在更新LoginName
+            user.setLoginName(null);
+            userMapper.updateByPrimaryKeySelective(user);
         }
     }
 
