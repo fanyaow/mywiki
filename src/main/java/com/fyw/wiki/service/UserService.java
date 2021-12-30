@@ -96,6 +96,7 @@ public class UserService {
 //            userMapper.updateByPrimaryKey(user);
             //保存时,如果loginName 为空,都不在更新LoginName
             user.setLoginName(null);
+            user.setPassword(null);
             userMapper.updateByPrimaryKeySelective(user);
         }
     }
