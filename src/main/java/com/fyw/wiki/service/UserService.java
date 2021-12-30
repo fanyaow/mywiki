@@ -7,9 +7,10 @@ import com.fyw.wiki.exception.BusinessException;
 import com.fyw.wiki.exception.BusinessExceptionCode;
 import com.fyw.wiki.mapper.UserMapper;
 import com.fyw.wiki.req.UserQueryReq;
+import com.fyw.wiki.req.UserResetPasswordReq;
 import com.fyw.wiki.req.UserSaveReq;
-import com.fyw.wiki.resp.UserQueryResp;
 import com.fyw.wiki.resp.PageResp;
+import com.fyw.wiki.resp.UserQueryResp;
 import com.fyw.wiki.util.CopyUtil;
 import com.fyw.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
@@ -117,5 +118,12 @@ public class UserService {
         }else {
             return userList.get(0);
         }
+    }
+    /**
+     * 修改密码
+     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }
