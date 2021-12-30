@@ -3,11 +3,14 @@ package com.fyw.wiki.service;
 
 import com.fyw.wiki.domain.User;
 import com.fyw.wiki.domain.UserExample;
+import com.fyw.wiki.exception.BusinessException;
+import com.fyw.wiki.exception.BusinessExceptionCode;
 import com.fyw.wiki.mapper.UserMapper;
 import com.fyw.wiki.req.UserQueryReq;
+import com.fyw.wiki.req.UserResetPasswordReq;
 import com.fyw.wiki.req.UserSaveReq;
-import com.fyw.wiki.resp.UserQueryResp;
 import com.fyw.wiki.resp.PageResp;
+import com.fyw.wiki.resp.UserQueryResp;
 import com.fyw.wiki.util.CopyUtil;
 import com.fyw.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
@@ -15,6 +18,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -79,17 +83,47 @@ public class UserService {
     public void save(UserSaveReq req){
         User user = CopyUtil.copy(req,User.class);
         if (ObjectUtils.isEmpty(req.getId())){
-            //新增
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);
+            //新增前判断loginName 是否存在
+            User userDB =selectByLoginName(req.getLoginName());
+            if (ObjectUtils.isEmpty(userDB)){
+                //新增
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);
+            }else {
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
         }else {
             //保存
-            userMapper.updateByPrimaryKey(user);
+//            userMapper.updateByPrimaryKey(user);
+            //保存时,如果loginName 为空,都不在更新LoginName
+            user.setLoginName(null);
+            user.setPassword(null);
+            userMapper.updateByPrimaryKeySelective(user);
         }
     }
 
     //删除
     public void delete(Long id){
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    //判断登陆名是否存在
+    public User selectByLoginName (String LoginName){
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(LoginName);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(userList)){
+            return null;
+        }else {
+            return userList.get(0);
+        }
+    }
+    /**
+     * 修改密码
+     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }
