@@ -4,10 +4,10 @@
       <div class="logo" />
     </div>
     <div>
-<!--      <a class="login-menu" v-show="user.id">-->
-<!--        <span>您好：{{user.name}}</span>-->
-<!--      </a>-->
-      <a class="login-menu" @click="showLoginModal">
+      <a class="login-menu" v-show="user.id">
+        <span>您好：{{user.name}}</span>
+      </a>
+      <a class="login-menu" v-show="!user.id" @click="showLoginModal">
         <span>登录</span>
       </a>
     </div>
@@ -65,8 +65,8 @@ export default defineComponent({
   setup() {
 
     //   //登录后保存
-    // const user=ref();
-    // user.value={};
+    const user=ref();
+    user.value={};
       //登录用户
     const loginUser = ref({
       loginName: 'test',
@@ -91,7 +91,7 @@ export default defineComponent({
                 loginModalLoading.value = false;
                 message.success("登录成功");
                 console.log("昵称：",loginUser.value.loginName)
-                // user.value=data.content;
+                user.value=data.content;
             }else{
                 message.error(data.message)
             }
@@ -105,7 +105,8 @@ export default defineComponent({
       loginModalLoading,
       showLoginModal,
       loginUser,
-      login
+      login,
+      user
     }
   }
 });
