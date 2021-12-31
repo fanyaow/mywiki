@@ -6,11 +6,13 @@ import com.fyw.wiki.domain.UserExample;
 import com.fyw.wiki.exception.BusinessException;
 import com.fyw.wiki.exception.BusinessExceptionCode;
 import com.fyw.wiki.mapper.UserMapper;
+import com.fyw.wiki.req.UserLoginReq;
 import com.fyw.wiki.req.UserQueryReq;
 import com.fyw.wiki.req.UserResetPasswordReq;
 import com.fyw.wiki.req.UserSaveReq;
 import com.fyw.wiki.resp.PageResp;
 import com.fyw.wiki.resp.UserQueryResp;
+import com.fyw.wiki.resp.UserLoginResp;
 import com.fyw.wiki.util.CopyUtil;
 import com.fyw.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
@@ -125,5 +127,27 @@ public class UserService {
     public void resetPassword(UserResetPasswordReq req) {
         User user = CopyUtil.copy(req, User.class);
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 用户登录
+     */
+    public UserLoginResp login(UserLoginReq req) {
+        User userDb = selectByLoginName(req.getLoginName());
+        if (ObjectUtils.isEmpty(userDb)) {
+            // 用户名不存在
+            LOG.info("用户名不存在, {}", req.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        } else {
+            if (userDb.getPassword().equals(req.getPassword())) {
+                // 登录成功
+                UserLoginResp userLoginResp = CopyUtil.copy(userDb, UserLoginResp.class);
+                return userLoginResp;
+            } else {
+                // 密码不对
+                LOG.info("密码不对, 输入密码：{}, 数据库密码：{}", req.getPassword(), userDb.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+        }
     }
 }

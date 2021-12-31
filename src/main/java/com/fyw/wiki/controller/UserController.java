@@ -1,10 +1,12 @@
 package com.fyw.wiki.controller;
 
+import com.fyw.wiki.req.UserLoginReq;
 import com.fyw.wiki.req.UserQueryReq;
 import com.fyw.wiki.req.UserResetPasswordReq;
 import com.fyw.wiki.req.UserSaveReq;
 import com.fyw.wiki.resp.CommonResp;
 import com.fyw.wiki.resp.PageResp;
+import com.fyw.wiki.resp.UserLoginResp;
 import com.fyw.wiki.resp.UserQueryResp;
 import com.fyw.wiki.service.UserService;
 import org.springframework.util.DigestUtils;
@@ -51,6 +53,16 @@ public class UserController {
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.resetPassword(req);
+        return resp;
+    }
+
+    //重置密码
+    @PostMapping("/login")
+    public CommonResp login(@Valid @RequestBody UserLoginReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        UserLoginResp userLoginResp = userService.login(req);
+        resp.setContent(userLoginResp);
         return resp;
     }
 }
