@@ -5,9 +5,9 @@
     </div>
     <div>
 <!--      <a class="login-menu" v-show="user.id">-->
-<!--        <span>您好：{{.name}}</span>-->
+<!--        <span>您好：{{user.name}}</span>-->
 <!--      </a>-->
-      <a class="login-menu"  @click="showLoginModal">
+      <a class="login-menu" @click="showLoginModal">
         <span>登录</span>
       </a>
     </div>
@@ -53,12 +53,21 @@
 </template>
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
+import axios from "axios";
+import {message} from "ant-design-vue";
+
+declare let hexMd5: any;
+declare let KEY: any;
 
 export default defineComponent({
   name: 'the-header',
 
   setup() {
 
+    //   //登录后保存
+    // const user=ref();
+    // user.value={};
+      //登录用户
     const loginUser = ref({
       loginName: 'test',
       password: 'test123'
@@ -71,8 +80,25 @@ export default defineComponent({
     };
 
     const login = () => {
-      console.log('开始登录')
-    }
+        console.log('开始登录');
+
+        loginModalLoading.value=true;
+        loginUser.value.password=hexMd5(loginUser.value.password + KEY)
+        axios.post("/user/login", loginUser.value).then((response) => {
+            loginModalLoading.value = false;
+            const data = response.data;
+            if (data.success) {
+                loginModalLoading.value = false;
+                message.success("登录成功");
+                console.log("昵称：",loginUser.value.loginName)
+                // user.value=data.content;
+            }else{
+                message.error(data.message)
+            }
+            });
+
+    };
+
 
     return {
       loginModalVisible,
