@@ -1,8 +1,10 @@
 package com.fyw.wiki.service;
 
 
+import com.fyw.wiki.domain.DocExample;
 import com.fyw.wiki.domain.Ebook;
 import com.fyw.wiki.domain.EbookExample;
+import com.fyw.wiki.mapper.DocMapper;
 import com.fyw.wiki.mapper.EbookMapper;
 import com.fyw.wiki.req.EbookQueryReq;
 import com.fyw.wiki.req.EbookSaveReq;
@@ -28,6 +30,9 @@ public class EbookService {
     @Resource  //jdk的
 //    @Autowired  //spring的
     private EbookMapper ebookMapper;
+
+    @Resource  //jdk的
+    private DocMapper docMapper;
 
     @Resource  //jdk的
 //    @Autowired  //spring的
@@ -91,6 +96,12 @@ public class EbookService {
 
     //删除
     public void delete(Long id){
+        //这样删除 下及的电子书的相关文档时不会删除的.
         ebookMapper.deleteByPrimaryKey(id);
+        //删除电子书下文档一同删除了
+        DocExample docExample = new DocExample();
+        DocExample.Criteria criteria = docExample.createCriteria();
+        criteria.andEbookIdEqualTo(id);
+        docMapper.deleteByExample(docExample);
     }
 }

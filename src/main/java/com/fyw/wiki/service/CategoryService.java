@@ -95,5 +95,11 @@ public class CategoryService {
     //删除
     public void delete(Long id){
         categoryMapper.deleteByPrimaryKey(id);
+
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        criteria.andParentEqualTo(id);
+        categoryMapper.deleteByExample(categoryExample);
+
     }
 }
