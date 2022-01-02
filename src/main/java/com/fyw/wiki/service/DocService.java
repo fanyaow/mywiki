@@ -6,6 +6,7 @@ import com.fyw.wiki.domain.Doc;
 import com.fyw.wiki.domain.DocExample;
 import com.fyw.wiki.mapper.ContentMapper;
 import com.fyw.wiki.mapper.DocMapper;
+import com.fyw.wiki.mapper.DocMapperCust;
 import com.fyw.wiki.req.DocQueryReq;
 import com.fyw.wiki.req.DocSaveReq;
 import com.fyw.wiki.resp.DocQueryResp;
@@ -33,6 +34,9 @@ public class DocService {
 
     @Resource
     private ContentMapper contentMapper;
+
+    @Resource
+    private DocMapperCust docMapperCust;
 
     @Resource  //jdk的
 //    @Autowired  //spring的
@@ -93,6 +97,8 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())){
             //新增
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             docMapper.insert(doc);
 
             content.setId(doc.getId());
@@ -123,6 +129,9 @@ public class DocService {
     //查询内容
     public String findContent(Long id){
         Content content = contentMapper.selectByPrimaryKey(id);
+        //文档阅读数+1
+        docMapperCust.updateDocViewCount(id);
+
         if (ObjectUtils.isEmpty(content)) {
             return "";
         }else {
