@@ -4,6 +4,8 @@ package com.fyw.wiki.service;
 import com.fyw.wiki.domain.Content;
 import com.fyw.wiki.domain.Doc;
 import com.fyw.wiki.domain.DocExample;
+import com.fyw.wiki.exception.BusinessException;
+import com.fyw.wiki.exception.BusinessExceptionCode;
 import com.fyw.wiki.mapper.ContentMapper;
 import com.fyw.wiki.mapper.DocMapper;
 import com.fyw.wiki.mapper.DocMapperCust;
@@ -12,6 +14,8 @@ import com.fyw.wiki.req.DocSaveReq;
 import com.fyw.wiki.resp.DocQueryResp;
 import com.fyw.wiki.resp.PageResp;
 import com.fyw.wiki.util.CopyUtil;
+import com.fyw.wiki.util.RedisUtil;
+import com.fyw.wiki.util.RequestContext;
 import com.fyw.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -35,6 +39,8 @@ public class DocService {
     @Resource
     private ContentMapper contentMapper;
 
+    @Resource
+    private RedisUtil redisUtil;
     @Resource
     private DocMapperCust docMapperCust;
 
@@ -141,6 +147,15 @@ public class DocService {
 
     //点赞
     public void  vote(Long id){
-        docMapperCust.updateDocVoteCount(id);
+        // docMapperCust.updateDocVoteCount(id);
+        // 远程IP+doc.id作为key，24小时内不能重复
+        String ip = RequestContext.getRemoteAddr();
+
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600*24)) {
+            docMapperCust.updateDocVoteCount(id);
+        } else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
+
     }
 }
