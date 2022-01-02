@@ -4,7 +4,7 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <a-row :gutter="24">
-        <a-col :span="8">
+        <a-col :span="6">
           <p>
             <a-form layout="inline" :model="param">
               <a-form-item>
@@ -53,7 +53,7 @@
           </a-table>
 
         </a-col>
-        <a-col :span="16">
+        <a-col :span="18">
           <p>
           <a-space size="small">
             <a-form layout="inline" :model="param">

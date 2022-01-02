@@ -15,6 +15,14 @@
           </a-tree>
         </a-col>
         <a-col :span="18">
+          <div>
+            <h2>{{doc.name}}</h2>
+            <div>
+              <span>阅读数:{{doc.viewCount}}</span> &nbsp;&nbsp;
+              <span>点赞数:{{doc.voteCount}}</span>
+            </div>
+            <a-divider style="height: 2px;background-color:#9999cc "></a-divider>
+          </div>
           <div class="wangeditor" :innerHTML="html">
           </div>
         </a-col>
@@ -115,6 +123,7 @@ export default defineComponent({
       html,
       onSelect,
       defaultSelectedKeys,
+      doc,
 
     }
   }
