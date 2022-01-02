@@ -54,7 +54,7 @@
           <a-input v-model:value="loginUser.loginName" />
         </a-form-item>
         <a-form-item label="密码" >
-          <a-input v-model:value="loginUser.password"  />
+          <a-input v-model:value="loginUser.password" type="password"  />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -66,6 +66,7 @@ import {computed, defineComponent, ref} from 'vue';
 import axios from "axios";
 import {message} from "ant-design-vue";
 import store from "@/store";
+import router from "@/router";
 
 declare let hexMd5: any;
 declare let KEY: any;
@@ -105,6 +106,7 @@ export default defineComponent({
                 console.log("昵称：",loginUser.value.loginName)
                 // user.value=data.content;
                 store.commit("setUser",data.content);
+
             }else{
                 message.error(data.message)
             }
@@ -120,6 +122,8 @@ export default defineComponent({
         if (data.success) {
           message.success("退出登录成功！");
           store.commit("setUser", {});
+          //退出登陆后,把退出的页面也都返回到登陆页面
+          router.push('/');
         } else {
           message.error(data.message);
         }
