@@ -96,6 +96,7 @@ public class CategoryService {
     public void delete(Long id){
         categoryMapper.deleteByPrimaryKey(id);
 
+        //根据id ,将下级分类的parent=id的 全部删除了
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
         criteria.andParentEqualTo(id);
