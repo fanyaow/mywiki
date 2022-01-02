@@ -52,7 +52,7 @@
   </a-layout-header>
 </template>
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import {computed, defineComponent, ref} from 'vue';
 import axios from "axios";
 import {message} from "ant-design-vue";
 import store from "@/store";
@@ -66,8 +66,9 @@ export default defineComponent({
   setup() {
 
     //   //登录后保存
-    const user=ref();
-    user.value={};
+    // const user=ref();
+    // user.value={};
+    const user = computed(()=>store.state.user);
       //登录用户
     const loginUser = ref({
       loginName: 'test',
@@ -92,8 +93,8 @@ export default defineComponent({
                 loginModalLoading.value = false;
                 message.success("登录成功");
                 console.log("昵称：",loginUser.value.loginName)
-                user.value=data.content;
-                store.commit("setUser",user.value);
+                // user.value=data.content;
+                store.commit("setUser",data.content);
             }else{
                 message.error(data.message)
             }
