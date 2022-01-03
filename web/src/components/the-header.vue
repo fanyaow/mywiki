@@ -1,7 +1,7 @@
 <template>
   <a-layout-header class="header">
     <div>
-      <div class="logo" />
+      <div class="logo">Wiki知识库</div>
     </div>
     <div>
       <a-popconfirm
@@ -102,7 +102,7 @@ export default defineComponent({
             loginModalLoading.value = false;
             const data = response.data;
             if (data.success) {
-                loginModalLoading.value = false;
+              loginModalVisible.value = false;
                 message.success("登录成功");
                 console.log("昵称：",loginUser.value.loginName)
                 // user.value=data.content;
