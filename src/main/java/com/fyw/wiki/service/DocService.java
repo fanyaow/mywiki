@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -105,6 +106,8 @@ public class DocService {
     }
 
     //保存
+    //事务异步注解,当一个方法触发多个事务时要添加事务异步
+    @Transactional
     public void save(DocSaveReq req){
         Doc doc = CopyUtil.copy(req,Doc.class);
         Content content = CopyUtil.copy(req, Content.class);
@@ -127,11 +130,12 @@ public class DocService {
         }
     }
 
-    //删除
+    //删除单个文档
     public void delete(Long id){
         docMapper.deleteByPrimaryKey(id);
     }
 
+    //删除电子书文档及其下属的文档
     public void delete(List<String> ids){
 
         DocExample docExample = new DocExample();

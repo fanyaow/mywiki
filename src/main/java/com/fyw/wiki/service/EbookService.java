@@ -17,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -95,6 +96,7 @@ public class EbookService {
     }
 
     //删除
+    @Transactional
     public void delete(Long id){
         //这样删除 下及的电子书的相关文档时不会删除的.
         ebookMapper.deleteByPrimaryKey(id);
