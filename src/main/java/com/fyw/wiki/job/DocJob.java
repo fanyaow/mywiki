@@ -22,9 +22,9 @@ public class DocJob {
     private SnowFlake snowFlake;
 
     /**
-     * 每天8:00 定时执行一次
+     * 每天8:00 定时执行一次 cron = "0 0 8 * * ?"
      */
-    @Scheduled(cron = "0 0 8 * * ?")
+    @Scheduled(cron = "0 0/2 * * * ?")
     public void cron() {
         // 增加日志流水号
         MDC.put("LOG_ID", String.valueOf(snowFlake.nextId()));
