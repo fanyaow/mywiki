@@ -17,6 +17,7 @@ import com.fyw.wiki.util.CopyUtil;
 import com.fyw.wiki.util.RedisUtil;
 import com.fyw.wiki.util.RequestContext;
 import com.fyw.wiki.util.SnowFlake;
+import com.fyw.wiki.websocket.WebSocketServer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -43,6 +44,9 @@ public class DocService {
     private RedisUtil redisUtil;
     @Resource
     private DocMapperCust docMapperCust;
+
+    @Resource
+    private WebSocketServer webSocketServer;
 
     @Resource  //jdk的
 //    @Autowired  //spring的
@@ -157,8 +161,12 @@ public class DocService {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
 
+        //推送消息
+        Doc docDb = docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("["+docDb.getName()+"]被点赞!");
     }
 
+    //定时更新ebook里边的相关数据
     public void updateEbookInfo(){
         docMapperCust.updateEbookInfo();
     }
