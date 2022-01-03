@@ -41,16 +41,19 @@ public class DocService {
     private ContentMapper contentMapper;
 
     @Resource
-    private RedisUtil redisUtil;
+    public RedisUtil redisUtil;
     @Resource
     private DocMapperCust docMapperCust;
 
     @Resource
-    private WebSocketServer webSocketServer;
+    public WebSocketServer webSocketServer;
 
     @Resource  //jdk的
 //    @Autowired  //spring的
     private SnowFlake snowFlake;
+
+    @Resource
+    private WsService wsService;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -163,7 +166,7 @@ public class DocService {
 
         //推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
-        webSocketServer.sendInfo("["+docDb.getName()+"]被点赞!");
+        wsService.sendInfo("["+docDb.getName()+"]被点赞!");
     }
 
     //定时更新ebook里边的相关数据
