@@ -20,6 +20,7 @@ import com.fyw.wiki.util.SnowFlake;
 import com.fyw.wiki.websocket.WebSocketServer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -56,6 +57,9 @@ public class DocService {
 
     @Resource
     private WsService wsService;
+
+    @Resource
+    public RocketMQTemplate rocketMQTemplate;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -163,7 +167,7 @@ public class DocService {
         // 远程IP+doc.id作为key，24小时内不能重复
         String ip = RequestContext.getRemoteAddr();
 
-        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600*24)) {
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 5000)) {
             docMapperCust.updateDocVoteCount(id);
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
@@ -172,7 +176,9 @@ public class DocService {
         //推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
         String logId= MDC.get("LOG_ID");
-        wsService.sendInfo("["+docDb.getName()+"]被点赞!",logId);
+//        wsService.sendInfo("["+docDb.getName()+"]被点赞!",logId);
+
+        rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
     }
 
     //定时更新ebook里边的相关数据

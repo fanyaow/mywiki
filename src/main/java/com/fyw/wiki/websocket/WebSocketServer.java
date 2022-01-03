@@ -48,7 +48,7 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose(Session session) {
-        MDC.put("LOG_ID", String.valueOf(snowFlake.nextId()));
+
         map.remove(this.token);
         LOG.info("连接关闭，token：{}，session id：{}！当前连接数：{}", this.token, session.getId(), map.size());
     }
