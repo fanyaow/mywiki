@@ -69,4 +69,9 @@ public class DocController {
         docService.vote(id);
         return resp;
     }
+
+//    @PostMapping("/upload")
+//    public CommonResp fileUpload(@RequestParam MultipartFile file) {
+//        // 将file放到本地，或是图片服务器
+//    }
 }

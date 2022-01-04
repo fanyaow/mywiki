@@ -64,7 +64,7 @@
             <a-form layout="'inline">
               <router-link to="/admin/ebook">
                 <a-button type="dashed" danger>
-                  返回电子书
+                  返回文档
                 </a-button>
               </router-link>
             </a-form>
@@ -226,7 +226,8 @@ export default defineComponent({
     const modalLoading = ref(false);
     const editor =new E('#content');
     editor.config.zIndex=0;   //富文本的高度 默认是500
-
+    // editor.config.uploadImgServer = '/upload-img';
+    editor.config.uploadImgShowBase64 = true;
 
     const handleSave = ()=>{
       modalLoading.value=true;

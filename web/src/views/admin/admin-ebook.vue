@@ -31,9 +31,9 @@
           :loading="loading"
           @change="handleTableChange"
       >
-        <template #cover="{ text: cover }">
-          <img v-if="cover" :src="cover" alt="avatar" />
-        </template>
+<!--        <template #cover="{ text: cover }">-->
+<!--          <img v-if="cover" :src="cover" alt="avatar" />-->
+<!--        </template>-->
         <template v-slot:category="{ text, record }">
           <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
         </template>
@@ -69,9 +69,9 @@
       @ok="handleModalOk"
   >
     <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-      <a-form-item label="封面">
-        <a-input v-model:value="ebook.cover" />
-      </a-form-item>
+<!--      <a-form-item label="封面">-->
+<!--        <a-input v-model:value="ebook.cover" />-->
+<!--      </a-form-item>-->
       <a-form-item label="名称">
         <a-input v-model:value="ebook.name" />
       </a-form-item>
@@ -109,11 +109,11 @@
       const loading =ref(false);
 
       const columns=[
-        {
-          title: '封面',
-          dataIndex: 'cover',
-          slots: { customRender: 'cover' }
-        },
+        // {
+        //   title: '封面',
+        //   dataIndex: 'cover',
+        //   slots: { customRender: 'cover' }
+        // },
         {
           title: '名称',
           dataIndex: 'name'
