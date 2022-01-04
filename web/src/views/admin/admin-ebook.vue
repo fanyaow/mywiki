@@ -69,9 +69,26 @@
       @ok="handleModalOk"
   >
     <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-<!--      <a-form-item label="封面">-->
-<!--        <a-input v-model:value="ebook.cover" />-->
-<!--      </a-form-item>-->
+      <a-form-item label="封面">
+        <a-input v-model:value="ebook.cover" />
+        <a-upload
+            v-model:file-list="fileList"
+            name="avatar"
+            list-type="picture-card"
+            class="avatar-uploader"
+            :show-upload-list="false"
+            :action="SERVER+'/ebook/upload/avatar'"
+            :before-upload="beforeUpload"
+            @change="handleChange"
+        >
+          <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+          <div v-else>
+            <loading-outlined v-if="loading"></loading-outlined>
+            <plus-outlined v-else></plus-outlined>
+            <div class="ant-upload-text">Upload</div>
+          </div>
+        </a-upload>
+      </a-form-item>
       <a-form-item label="名称">
         <a-input v-model:value="ebook.name" />
       </a-form-item>
@@ -95,6 +112,12 @@
   import {message} from "ant-design-vue";
   import {Tool} from "@/util/tool";
 
+  function getBase64(img: Blob, callback: (base64Url: string) => void) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+  }
+
   export default defineComponent({
     name:'AdminEbook',
     setup(){
@@ -109,11 +132,11 @@
       const loading =ref(false);
 
       const columns=[
-        // {
-        //   title: '封面',
-        //   dataIndex: 'cover',
-        //   slots: { customRender: 'cover' }
-        // },
+        {
+          title: '封面',
+          dataIndex: 'cover',
+          slots: { customRender: 'cover' }
+        },
         {
           title: '名称',
           dataIndex: 'name'
@@ -277,6 +300,44 @@
         return result;
       };
 
+      const SERVER = process.env.VUE_APP_SERVER;
+      console.log("SERVER----------------",SERVER)
+      const fileList = ref([]);
+      const coverloading = ref<boolean>(false);
+      const imageUrl = ref<string>('');
+
+      const handleChange = (info: any) => {
+        // console.log('^^^^^^^^^^^^',info.file.status);
+        if (info.file.status === 'uploading') {
+          coverloading.value = true;
+          return;
+        }
+        if (info.file.status === 'done') {
+          // Get this url from response in real world.
+          getBase64(info.file.originFileObj, (base64Url: string) => {
+            imageUrl.value = base64Url;
+            coverloading.value = false;
+          });
+          ebook.value.cover= SERVER + "/file/" + info.file.name;
+        }
+        if (info.file.status === 'error') {
+          coverloading.value = false;
+          message.error('上传失败!');
+        }
+      };
+
+      const beforeUpload = (file: any) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+          message.error('You can only upload JPG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          message.error('Image must smaller than 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+      };
+
       onMounted(()=>{
         handleQueryCategroy();
 
@@ -303,6 +364,14 @@
         level1,
 
         handleDelete,
+
+
+        fileList,
+        coverloading,
+        imageUrl,
+        handleChange,
+        beforeUpload,
+        SERVER
       }
     }
   })

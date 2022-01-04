@@ -3,6 +3,7 @@ package com.fyw.wiki.config;
 import com.fyw.wiki.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
@@ -28,7 +29,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/doc/all/**",
                         "/doc/vote/**",
                         "/doc/find-content/**",
-                        "/ebook-snapshot/**"
+                        "/ebook-snapshot/**",
+                        "/ebook/upload/avatar",
+                        "/file/**"
                 );
 
 //        registry.addInterceptor(actionInterceptor)
@@ -36,5 +39,11 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 //                        "/*/save",
 //                        "/*/delete/**",
 //                        "/*/reset-password");
+    }
+
+    @Override
+    //对静态资源的处理
+    public void addResourceHandlers(ResourceHandlerRegistry registry){
+        registry.addResourceHandler("/file/**").addResourceLocations("file:D:/tools/springboot/upload/");
     }
 }
