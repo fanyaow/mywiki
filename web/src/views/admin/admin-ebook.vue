@@ -149,6 +149,10 @@
           slots: { customRender: 'category' }
         },
         {
+          title: '排序',
+          dataIndex: 'sort'
+        },
+        {
           title: '文档数',
           dataIndex: 'docCount'
         },

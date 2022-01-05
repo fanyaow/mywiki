@@ -5,6 +5,8 @@ public class EbookQueryReq extends PageReq {
 
     private String name;
 
+    private Long sort;
+
     private Long categoryId2;
 
     public Long getCategoryId2() {
@@ -31,12 +33,20 @@ public class EbookQueryReq extends PageReq {
         this.name = name;
     }
 
+    public Long getSort() {
+        return sort;
+    }
+
+    public void setSort(Long sort) {
+        this.sort = sort;
+    }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("EbookQueryReq{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
+        sb.append(", sort=").append(sort);
         sb.append(", categoryId2=").append(categoryId2);
         sb.append('}');
         return sb.toString();

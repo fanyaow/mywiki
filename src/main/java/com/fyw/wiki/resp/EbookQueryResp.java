@@ -15,6 +15,8 @@ public class EbookQueryResp {
 
     private String cover;
 
+    private Long sort;
+
     private Integer docCount;
 
     private Integer viewCount;
@@ -69,6 +71,14 @@ public class EbookQueryResp {
         this.cover = cover;
     }
 
+    public Long getSort() {
+        return sort;
+    }
+
+    public void setSort(Long sort) {
+        this.sort = sort;
+    }
+
     public Integer getDocCount() {
         return docCount;
     }
@@ -95,20 +105,18 @@ public class EbookQueryResp {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
+        final StringBuffer sb = new StringBuffer("EbookQueryResp{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
         sb.append(", category1Id=").append(category1Id);
         sb.append(", category2Id=").append(category2Id);
-        sb.append(", description=").append(description);
-        sb.append(", cover=").append(cover);
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", cover='").append(cover).append('\'');
+        sb.append(", sort=").append(sort);
         sb.append(", docCount=").append(docCount);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", voteCount=").append(voteCount);
-        sb.append("]");
+        sb.append('}');
         return sb.toString();
     }
 }
