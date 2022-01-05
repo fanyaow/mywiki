@@ -24,7 +24,7 @@ create table `ebook` (
                          `category2_id` bigint comment '分类2',
                          `description` varchar(200) comment '描述',
                          `cover` varchar(200) comment '封面',
-                         `sort` varchar(200) comment '排序',
+                         `sort` bigint comment '排序',
                          `doc_count` int not null default 0 comment '文档数',
                          `view_count` int not null default 0 comment '阅读数',
                          `vote_count` int not null default 0 comment '点赞数',
