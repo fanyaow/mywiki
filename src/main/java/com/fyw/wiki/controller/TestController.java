@@ -1,4 +1,5 @@
 package com.fyw.wiki.controller;
+import com.fyw.wiki.config.PropConfig;
 import com.fyw.wiki.domain.Test;
 import com.fyw.wiki.service.TestService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ public class TestController {
     @Resource
     public TestService testService;
 
+    @Resource
+    public PropConfig propConfig;
 
     @RequestMapping("/hello")
     public String hell(){
@@ -23,5 +26,10 @@ public class TestController {
     @GetMapping("/test/list")
     public List<Test> list() {
         return testService.list() ;
+    }
+
+    @GetMapping("/test/upload")
+    public String test(){
+       return propConfig.getFilePath();
     }
 }

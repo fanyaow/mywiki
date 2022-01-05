@@ -13,3 +13,4 @@ GET http://localhost:8000/demo/list
 GET http://localhost:8000/ebook/list?page=1&size=10001
 
 ###
+GET http://localhost:8000/test/upload
