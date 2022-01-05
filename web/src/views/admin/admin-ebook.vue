@@ -99,6 +99,9 @@
             :options="level1"
         />
       </a-form-item>
+      <a-form-item label="排序">
+        <a-input v-model:value="ebook.sort" />
+      </a-form-item>
       <a-form-item label="描述">
         <a-input v-model:value="ebook.description" type="textarea" />
       </a-form-item>

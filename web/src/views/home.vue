@@ -53,7 +53,7 @@
                   {{item.name}}
                 </router-link>
               </template>
-<!--              <template #avatar><a-avatar :src="item.cover" /></template>-->
+              <template #avatar><a-avatar :src="item.cover" /></template>
             </a-list-item-meta>
 
           </a-list-item>

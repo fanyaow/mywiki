@@ -44,6 +44,7 @@ public class EbookService {
 
     public PageResp<EbookQueryResp> list(EbookQueryReq req) {
         EbookExample ebookExample = new EbookExample();
+        ebookExample.setOrderByClause("sort asc");
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         //增加判断 如果name为空,则返回所有
         if (!ObjectUtils.isEmpty(req.getName())) {
@@ -88,6 +89,9 @@ public class EbookService {
         if (ObjectUtils.isEmpty(req.getId())){
             //新增
             ebook.setId(snowFlake.nextId());
+            ebook.setDocCount(0);
+            ebook.setViewCount(0);
+            ebook.setVoteCount(0);
             ebookMapper.insert(ebook);
         }else {
             //保存

@@ -1,5 +1,6 @@
 package com.fyw.wiki.req;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class EbookSaveReq {
@@ -15,6 +16,9 @@ public class EbookSaveReq {
     private String description;
 
     private String cover;
+
+    @NotNull(message = "[排序]不能为空")
+    private Long sort;
 
     private Integer docCount;
 
@@ -70,6 +74,14 @@ public class EbookSaveReq {
         this.cover = cover;
     }
 
+    public Long getSort() {
+        return sort;
+    }
+
+    public void setSort(Long sort) {
+        this.sort = sort;
+    }
+
     public Integer getDocCount() {
         return docCount;
     }
@@ -106,6 +118,7 @@ public class EbookSaveReq {
         sb.append(", category2Id=").append(category2Id);
         sb.append(", description=").append(description);
         sb.append(", cover=").append(cover);
+        sb.append(", sort=").append(sort);
         sb.append(", docCount=").append(docCount);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", voteCount=").append(voteCount);
