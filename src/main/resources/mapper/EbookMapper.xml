@@ -8,6 +8,7 @@
     <result column="category2_id" jdbcType="BIGINT" property="category2Id" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="cover" jdbcType="VARCHAR" property="cover" />
+    <result column="sort" jdbcType="BIGINT" property="sort" />
     <result column="doc_count" jdbcType="INTEGER" property="docCount" />
     <result column="view_count" jdbcType="INTEGER" property="viewCount" />
     <result column="vote_count" jdbcType="INTEGER" property="voteCount" />
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, category1_id, category2_id, description, cover, doc_count, view_count, 
+    id, `name`, category1_id, category2_id, description, cover, sort, doc_count, view_count, 
     vote_count
   </sql>
   <select id="selectByExample" parameterType="com.fyw.wiki.domain.EbookExample" resultMap="BaseResultMap">
@@ -107,12 +108,12 @@
   <insert id="insert" parameterType="com.fyw.wiki.domain.Ebook">
     insert into ebook (id, `name`, category1_id, 
       category2_id, description, cover, 
-      doc_count, view_count, vote_count
-      )
+      sort, doc_count, view_count, 
+      vote_count)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{category1Id,jdbcType=BIGINT}, 
       #{category2Id,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
-      #{docCount,jdbcType=INTEGER}, #{viewCount,jdbcType=INTEGER}, #{voteCount,jdbcType=INTEGER}
-      )
+      #{sort,jdbcType=BIGINT}, #{docCount,jdbcType=INTEGER}, #{viewCount,jdbcType=INTEGER}, 
+      #{voteCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.fyw.wiki.domain.Ebook">
     insert into ebook
@@ -134,6 +135,9 @@
       </if>
       <if test="cover != null">
         cover,
+      </if>
+      <if test="sort != null">
+        sort,
       </if>
       <if test="docCount != null">
         doc_count,
@@ -163,6 +167,9 @@
       </if>
       <if test="cover != null">
         #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=BIGINT},
       </if>
       <if test="docCount != null">
         #{docCount,jdbcType=INTEGER},
@@ -202,6 +209,9 @@
       <if test="record.cover != null">
         cover = #{record.cover,jdbcType=VARCHAR},
       </if>
+      <if test="record.sort != null">
+        sort = #{record.sort,jdbcType=BIGINT},
+      </if>
       <if test="record.docCount != null">
         doc_count = #{record.docCount,jdbcType=INTEGER},
       </if>
@@ -224,6 +234,7 @@
       category2_id = #{record.category2Id,jdbcType=BIGINT},
       description = #{record.description,jdbcType=VARCHAR},
       cover = #{record.cover,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=BIGINT},
       doc_count = #{record.docCount,jdbcType=INTEGER},
       view_count = #{record.viewCount,jdbcType=INTEGER},
       vote_count = #{record.voteCount,jdbcType=INTEGER}
@@ -249,6 +260,9 @@
       <if test="cover != null">
         cover = #{cover,jdbcType=VARCHAR},
       </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=BIGINT},
+      </if>
       <if test="docCount != null">
         doc_count = #{docCount,jdbcType=INTEGER},
       </if>
@@ -268,6 +282,7 @@
       category2_id = #{category2Id,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
       cover = #{cover,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=BIGINT},
       doc_count = #{docCount,jdbcType=INTEGER},
       view_count = #{viewCount,jdbcType=INTEGER},
       vote_count = #{voteCount,jdbcType=INTEGER}

@@ -13,6 +13,8 @@ public class Ebook {
 
     private String cover;
 
+    private Long sort;
+
     private Integer docCount;
 
     private Integer viewCount;
@@ -67,6 +69,14 @@ public class Ebook {
         this.cover = cover;
     }
 
+    public Long getSort() {
+        return sort;
+    }
+
+    public void setSort(Long sort) {
+        this.sort = sort;
+    }
+
     public Integer getDocCount() {
         return docCount;
     }
@@ -103,6 +113,7 @@ public class Ebook {
         sb.append(", category2Id=").append(category2Id);
         sb.append(", description=").append(description);
         sb.append(", cover=").append(cover);
+        sb.append(", sort=").append(sort);
         sb.append(", docCount=").append(docCount);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", voteCount=").append(voteCount);
