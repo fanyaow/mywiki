@@ -77,6 +77,14 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+<!--        增加读取配置文件时,@ConfigurationProperties(prefix = "upload") -->
+<!--        会提示Spring Boot Configuration Annotation Processor not configured-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
 <!--         RocketMQ-->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.rocketmq</groupId>-->

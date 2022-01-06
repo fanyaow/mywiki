@@ -13,6 +13,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Resource
     LoginInterceptor loginInterceptor;
+
+    @Resource
+    public PropConfig propConfig;
 //
 //    @Resource
 //    ActionInterceptor actionInterceptor;
@@ -44,6 +47,6 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     @Override
     //对静态资源的处理
     public void addResourceHandlers(ResourceHandlerRegistry registry){
-        registry.addResourceHandler("/file/**").addResourceLocations("file:D:/tools/fyw/wiki/upload/");
+        registry.addResourceHandler("/file/**").addResourceLocations("file:"+propConfig.getFilePath());
     }
 }

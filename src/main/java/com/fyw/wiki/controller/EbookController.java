@@ -1,5 +1,6 @@
 package com.fyw.wiki.controller;
 
+import com.fyw.wiki.config.PropConfig;
 import com.fyw.wiki.req.EbookQueryReq;
 import com.fyw.wiki.req.EbookSaveReq;
 import com.fyw.wiki.resp.CommonResp;
@@ -25,6 +26,9 @@ public class EbookController {
 
     @Resource
     public EbookService ebookService;
+
+    @Resource
+    public PropConfig propConfig;
 
 //    @GetMapping("/ebook/list")
     @GetMapping("/list")
@@ -59,7 +63,8 @@ public class EbookController {
 
         //保存文件到本地
         String fileName = avatar.getOriginalFilename();
-        String fullPath = "D:/tools/fyw/wiki/upload/" + fileName;
+//        String fullPath = "D:/tools/fyw/wiki/upload/" + fileName;
+        String fullPath = propConfig.getFilePath() + fileName;
         File dest =new File(fullPath);
         avatar.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
