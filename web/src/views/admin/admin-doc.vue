@@ -28,7 +28,7 @@
               :pagination="false"
               :loading="loading"
               size="small"
-              :defaultExpandAllRows="true"
+              :defaultExpandAllRows="false"
           >
             <template #name="{ text, record }">
               {{record.sort}} {{text}}
@@ -81,7 +81,6 @@
                   :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                   :tree-data="treeSelectData"
                   placeholder="请选择父文档"
-                  tree-default-expand-all
                   :replaceFields ="{title : 'name' , key:'id',value:'id'}"
               >
               </a-tree-select>
